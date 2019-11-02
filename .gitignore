@@ -1,0 +1,4 @@
+.DS_Store
+.env
+.mypy_cache/
+project-folder/.mypy_cache
