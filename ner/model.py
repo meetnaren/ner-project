@@ -1,8 +1,6 @@
-import os
-from dotenv import load_dotenv
+from ner import settings
 
-dotenv_path = os.path.dirname(os.getcwd())
-load_dotenv(dotenv_path + '/.env')
+print(settings.env)
 
 
 class Model:
