@@ -1,11 +1,13 @@
 from fastapi import APIRouter
 from ner.model import NER
+from starlette.responses import JSONResponse
 
 
 router = APIRouter()
 
 
 @router.post('/extract_name')
-def extract_name(text):
+def extract_name(input: dict):
     ner = NER()
-    return ner.placeholder_method(text)
+    result = ner.placeholder_method(input['text'])
+    return JSONResponse({'result': result})
