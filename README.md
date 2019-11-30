@@ -17,16 +17,20 @@ The FastAPI app is built onto a docker image.
 To try the app:
 
 1. Run `docker build . -t ner_app` to build the Docker container
-2. Run `docker run -i -p 8080:5000 ner_app` to run the container and expose app on http://localhost:8080
+2. Run `docker run -i -d -p 8080:5000 ner_app` to run the container and expose app on http://localhost:8080
+
+If you encounter a connection error, try substituting `localhost` for your local ip address instead.
 
 ## Testing
 
 For health check:
 ```
-curl 'http://localhost:8080/healthcheck/'
+curl 'http://localhost:8080/healthcheck'
 ```
 
 To test `extract_name` endpoint:
 ```
 curl 'http://localhost:8080/ner/extract_name' -X POST -H 'Content-Type: application/json' -d '{"text": "text goes here"}'
 ```
+
+Use `http://localhost:8080/docs` to access FastAPI UI.
