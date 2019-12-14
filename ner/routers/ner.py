@@ -10,4 +10,5 @@ router = APIRouter()
 def extract_name(input: dict):
     ner = NER()
     result = ner.placeholder_method(input['text'])
+    ner.store_ner(input['text'], result)
     return JSONResponse({'result': result})
