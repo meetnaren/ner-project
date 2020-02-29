@@ -16,6 +16,7 @@ class ExtractedEntities(Base):
     text = Column('text', String)
     entities = Column('entities', JSON)
 
+
 engine = DB.create_db_engine()
 
 # create schema if doesn't exist
