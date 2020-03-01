@@ -24,7 +24,7 @@ with DAG(
     schedule_interval='*/5 9-17 * * *',  # cron schedule
     catchup=False,
 ) as dag:
-    price_listener = PythonOperator(
-        task_id='listener',
+    sample_task = PythonOperator(
+        task_id='sample_task',
         python_callable=sample_function,
     )
