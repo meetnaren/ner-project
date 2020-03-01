@@ -12,7 +12,7 @@ services:
                 max-file: "3"
 
     webserver:
-        image: day_trader_airflow
+        image: airflow
         restart: always
         depends_on:
             - postgres
