@@ -8,8 +8,8 @@ from spacy.util import compounding, minibatch
 from spacy.gold import GoldParse
 from spacy.scorer import Scorer
 from tqdm import tqdm
-import plac
 import os
+import logging
 
 def get_train_data(labels):
     with open('dump.json', 'r') as f:
@@ -26,25 +26,23 @@ def get_train_data(labels):
                     if e[2] in labels:
                         data_tuple[1]['entities'].append(e)
                 DATA.append(data_tuple)
-    print(f'{len(DATA)} records added.')
+    logging.debug(f'{len(DATA)} records added.')
     return DATA
 
 def evaluate(ner_model, examples):
     scorer = Scorer()
     for input_, annot in examples:
-        #print(input_, annot)
         doc_gold_text = ner_model.make_doc(input_)
         gold = GoldParse(doc_gold_text, entities=annot['entities'])
         pred_value = ner_model(input_)
         scorer.score(pred_value, gold)
     return scorer.scores
 
-@plac.annotations(
-    model=("'blank' or 'latest'", 'option', 'm'),
-    n_iter=('No. of training iterations', 'option', 'n')
-)
-def main(model='blank', n_iter=1):
-
+def main(model='latest', n_iter=1):
+'''
+model: 'latest' to retrieve the latest model from the Models directory, 'blank' to train a blank model from scratch
+n_iter: no. of iterations to train the model
+'''
     LABELS = [
         'FIRST_NAME',
         'LAST_NAME'
@@ -62,7 +60,7 @@ def main(model='blank', n_iter=1):
     else:
         latest_model = max([d for d in os.listdir('Models')])
         nlp = spacy.load('Models/'+latest_model)
-        print(f'Loaded model {latest_model}')
+        logging.debug(f'Loaded model {latest_model}')
         ner = nlp.get_pipe('ner')
 
     for label in LABELS:
@@ -82,29 +80,27 @@ def main(model='blank', n_iter=1):
         sizes = compounding(1.0, 4.0, 1.001)
         # batch up the examples using spaCy's minibatch
         for itn in range(n_iter):
-            print(f'In iteration {itn + 1}')
+            logging.debug(f'In iteration {itn + 1}')
             random.shuffle(DATA)
             TRAIN_DATA = DATA[:int(TRAIN_VAL_SPLIT * num_records)]
             VALID_DATA = DATA[len(TRAIN_DATA):]
-            print(f'Training on {len(TRAIN_DATA)} records, validating on {len(VALID_DATA)} records.')
+            logging.debug(f'Training on {len(TRAIN_DATA)} records, validating on {len(VALID_DATA)} records.')
 
             batches = minibatch(TRAIN_DATA, size=sizes)
             losses = {}
             for batch in tqdm(batches):
-                #print(f'Batch {n} in progress...')
                 texts, annotations = zip(*batch)
                 nlp.update(texts, annotations, sgd=optimizer, drop=0.35, losses=losses)
-            print("Training losses:", losses)
+            logging.debug("Training losses:", losses)
             scores = evaluate(nlp, VALID_DATA)
-            print(scores)
-
+            logging.debug(scores)
         
     # test the trained model
     test_text = "The name of my mentor is Mandy Gu"
     doc = nlp(test_text)
-    print(f'Entities in {test_text}')
+    logging.debug(f'Entities in {test_text}')
     for ent in doc.ents:
-        print(ent.label_, ent.text)
+        logging.debug(ent.label_, ent.text)
 
     #save the trained model
     model_name = 'model_' + time.strftime("%Y%m%d-%H%M%S")
@@ -114,4 +110,4 @@ def main(model='blank', n_iter=1):
     nlp.to_disk(f'Models/{model_name}')
 
 if __name__ == '__main__':
-    plac.call(main)
+    main()
