@@ -1,6 +1,8 @@
 from fastapi import APIRouter
 from ner.model import extract_entities
 from starlette.responses import JSONResponse
+import os
+import spacy
 
 router = APIRouter()
 
