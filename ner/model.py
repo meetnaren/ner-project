@@ -15,10 +15,11 @@ def extract_entities(input_text):
     latest_model = max([d for d in os.listdir(models_dir)])
     latest_model_path = os.path.join(models_dir, latest_model)
     nlp = spacy.load(latest_model_path)
-    logging.info(f'Loaded model {latest_model}')
+    print(f'Loaded model {latest_model}')
 
     # apply latest model on input text
     doc = nlp(input_text)
+    print(doc)
 
     # return the entities and texts
     result = [(ent.label_, ent.text) for ent in doc.ents] 
@@ -35,4 +36,4 @@ class NER:
         return text
 
 if __name__ == '__main__':
-    print(extract_entities('I am Narendran Santhanam'))
+    print(extract_entities('My name is Narendran Santhanam'))
