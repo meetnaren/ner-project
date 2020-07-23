@@ -18,7 +18,7 @@ def extract_entities(input_text):
     print(f'Loaded model {latest_model}')
 
     # apply latest model on input text
-    doc = nlp(input_text)
+    doc = nlp(input_text.lower())
     print(doc)
 
     # return the entities and texts
