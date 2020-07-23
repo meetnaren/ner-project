@@ -94,7 +94,7 @@ def evaluate(ner_model, examples):
         scorer.score(pred_value, gold)
     return scorer.scores
 
-def main(model='blank', n_iter=1):
+def main(model='latest', n_iter=10):
 #model: 'latest' to retrieve the latest model from the Models directory, 'blank' to train a blank model from scratch
 #n_iter: no. of iterations to train the model
     LABELS = [
@@ -103,7 +103,7 @@ def main(model='blank', n_iter=1):
     ]
 
     TRAIN_VAL_SPLIT = 0.80
-    DATA_AUGMENTATION_FACTOR = 10
+    DATA_AUGMENTATION_FACTOR = 25
 
     DATA = get_train_data(LABELS, DATA_AUGMENTATION_FACTOR)
     num_records = len(DATA)
@@ -130,7 +130,7 @@ def main(model='blank', n_iter=1):
 
     with nlp.disable_pipes(*other_pipes) and warnings.catch_warnings():
         #show warnings for misaligned entity spans once
-        warnings.filterwarnings("once", category=UserWarning, module='spacy')
+        warnings.filterwarnings("ignore", category=UserWarning, module='spacy')
 
         sizes = compounding(1.0, 4.0, 1.001)
         # batch up the examples using spaCy's minibatch
