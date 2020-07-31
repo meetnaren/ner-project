@@ -9,7 +9,7 @@ import spacy
 
 #print(settings.env)
 
-def extract_entities(input_text):
+def extract_entities(input_text=''):
     # get latest model
     models_dir = os.path.join('..', 'Models') if __name__ == '__main__' else 'Models'
     latest_model = max([d for d in os.listdir(models_dir)])
@@ -17,14 +17,10 @@ def extract_entities(input_text):
     nlp = spacy.load(latest_model_path)
     print(f'Loaded model {latest_model}')
 
-    # apply latest model on input text
     doc = nlp(input_text.lower())
-    print(doc)
 
     # return the entities and texts
-    result = [(ent.label_, ent.text) for ent in doc.ents] 
-    return result
-
+    return [(ent.label_, ent.text) for ent in doc.ents]
 
 class NER:
     @staticmethod
@@ -36,4 +32,4 @@ class NER:
         return text
 
 if __name__ == '__main__':
-    print(extract_entities('My name is Narendran Santhanam'))
+    extract_entities(input('Enter text with entities to be recognized:'))
