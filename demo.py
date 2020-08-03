@@ -13,7 +13,7 @@ if result:
             result_dict[i[0]].append(i[1])
         else:
             result_dict[i[0]] = [i[1]]
-    
+
     for k, v in result_dict.items():
         st.markdown(f'### {k}')
         for i in v:
