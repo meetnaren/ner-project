@@ -1,17 +1,15 @@
-import pandas as pd
-from sqlalchemy.orm import sessionmaker
-
-from ner import settings
-from ner.db import DB
-
-print(settings.env)
+import logging
+import os
+import spacy
 
 
-class NER:
-    @staticmethod
-    def load_data(sql):
-        sessionmaker(bind=DB.create_db_engine(), autocommit=True)
-        return pd.read_sql_query(sql, con=DB.create_db_engine())
+def extract_entities(input_text=''):
+    models_dir = os.path.join('..', 'Models')
+    latest_model = max([d for d in os.listdir(models_dir)])
+    latest_model_path = os.path.join(models_dir, latest_model)
+    nlp = spacy.load(latest_model_path)
+    logging.info(f'Loaded model {latest_model}')
 
-    def placeholder_method(self, text):
-        return text
+    doc = nlp(input_text.lower())
+
+    return [(ent.label_, ent.text) for ent in doc.ents]
