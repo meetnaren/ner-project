@@ -1,4 +1,5 @@
 from fastapi import APIRouter
+
 from ner.model import extract_entities
 from starlette.responses import JSONResponse
 from pydantic import BaseModel
@@ -11,6 +12,6 @@ class NameExtractionInput(BaseModel):
 
 
 @router.post('/recognize_entities')
-def recognize_entities(input: NameExtractionInput)) -> JSONResponse:
+def recognize_entities(input: NameExtractionInput) -> JSONResponse:
     result = extract_entities(input['text'])
     return JSONResponse({'result': result})

@@ -7,3 +7,12 @@ services:
       - ./ner/:/usr/src/ner/ner/
     ports:
       - "8080:5000"
+
+  streamlit:
+    image: streamlit
+    depends_on:
+      - ner_app
+    ports:
+        - "8501:8501"
+    volumes:
+      - ./ner/:/streamlit/ner/

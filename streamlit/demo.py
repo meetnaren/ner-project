@@ -1,6 +1,7 @@
 import streamlit as st
 from ner.model import extract_entities
 
+
 txt = st.text_area('Text to analyze')
 
 result = extract_entities(txt)
