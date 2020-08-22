@@ -1,5 +1,17 @@
 import streamlit as st
-from ner.model import extract_entities
+import requests
+
+
+def extract_entities(text):
+    headers = {
+        'accept': 'application/json',
+        'Content-Type': 'application/json',
+    }
+    data = '{{"text":"{}"}}'.format(text)
+    # TODO: parametrize url by environment
+    response = requests.post('http://localhost:8080/ner/recognize_entities',
+                             headers=headers, data=data)
+    return response.json()['result']
 
 
 txt = st.text_area('Text to analyze')
