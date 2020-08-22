@@ -12,6 +12,6 @@ class NameExtractionInput(BaseModel):
 
 
 @router.post('/recognize_entities')
-def recognize_entities(input: NameExtractionInput) -> JSONResponse:
-    result = extract_entities(input['text'])
+def recognize_entities(ner_input: NameExtractionInput) -> JSONResponse:
+    result = extract_entities(ner_input.text)
     return JSONResponse({'result': result})
