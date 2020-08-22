@@ -16,7 +16,7 @@ jobs:
             sudo apt update
             pip install -r fastapi/requirements.txt
             pip install -r streamlit/requirements.txt
-            pip install -r fastapi/requirements_dev.txt
+            pip install -r requirements_dev.txt
       - run:
           name: enforce styleguide
           command: |
