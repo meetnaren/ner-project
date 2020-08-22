@@ -17,7 +17,7 @@ The FastAPI app is built onto a docker image.
 To try the app:
 
 1. Run `docker build . -t ner_app` to build the Docker container
-2. Run `docker run -i -d -p 8080:5000 ner_app` to run the container and expose app on http://localhost:8080
+2. Run `docker-compose up` to run the container and expose app on http://localhost:8080
 
 If you encounter a connection error, try substituting `localhost` for your local ip address instead.
 

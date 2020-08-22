@@ -1,0 +1,18 @@
+version: '2.1'
+services:
+  ner_app:
+    image: ner_app
+    command: uvicorn ner.app:app --reload --workers 1 --host 0.0.0.0 --port 5000
+    volumes:
+      - ./ner/:/usr/src/ner/ner/
+    ports:
+      - "8080:5000"
+
+  streamlit:
+    image: streamlit
+    depends_on:
+      - ner_app
+    ports:
+        - "8501:8501"
+    volumes:
+      - ./ner/:/streamlit/ner/

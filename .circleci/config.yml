@@ -14,10 +14,12 @@ jobs:
             python3 -m venv venv
             . venv/bin/activate
             sudo apt update
-            pip install -r requirements.txt
+            pip install -r fastapi/requirements.txt
+            pip install -r streamlit/requirements.txt
             pip install -r requirements_dev.txt
       - run:
           name: enforce styleguide
           command: |
             . venv/bin/activate
-            flake8 ner
+            flake8 fastapi
+            flake8 streamlit
