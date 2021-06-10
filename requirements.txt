@@ -1,4 +1,4 @@
-fastapi==0.38.1
+fastapi==0.65.2
 pandas==0.23.4
 pre-commit==1.18.2
 psycopg2-binary==2.8.4
